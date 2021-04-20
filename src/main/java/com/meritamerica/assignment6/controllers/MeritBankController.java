@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 /**
- * This controller class allows, cd offerings, account holders and accounts associated with
+ * This controller class allows cd offerings, account holders and accounts associated with
  * an account holder to be created and retrieved from the web services provided by the API.
  */
 @RestController
