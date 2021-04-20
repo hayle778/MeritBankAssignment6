@@ -1,11 +1,24 @@
 package com.meritamerica.assignment6.models;
 
+/**
+ * this class represents a cd offering which consist of an id, term and interest rate
+ */
 public class CDOffering {
 
-    protected int id;
-    protected double interestRate;
-    protected int term;
     private static int nextId = 1;
+
+    /** the id of an individual cd offering */
+    protected int id;
+    /** the interest rate of the offering */
+    protected double interestRate;
+    /** the term of the offering */
+    protected int term;
+
+
+
+    public CDOffering() {
+        this.id = getNextId();
+    }
 
     public CDOffering(int term, double interestRate){
         this.id = nextId++;

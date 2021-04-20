@@ -204,12 +204,16 @@ public class MeritBankController {
      */
     @PostMapping(value="AccountHolders/{id}/CDAccounts")
     @ResponseStatus(HttpStatus.CREATED)
-    public CDAccount postCDAccountById(@PathVariable("id") int id, @RequestBody @Valid CDAccountDTO cdAccountDTO)
-            throws ExceedsFraudSuspicionLimitException, AccountHolderNotFoundException {
+    public CDAccount postCDAccountById(@PathVariable("id") int id, @RequestBody CDAccountDTO cdAccountDTO)
+            throws ExceedsFraudSuspicionLimitException, AccountHolderNotFoundException, OfferingNotFoundException {
 
         AccountHolder accountHolder = MeritBank.getAccountHolderbyId(id);
         if (accountHolder == null) {
             throw new AccountHolderNotFoundException("CD Account failed to Post: Account Holder could not be located");
+        }
+        System.out.println(cdAccountDTO.getCDOffering());
+        if (cdAccountDTO.getCDOffering().getId() == 0) {
+            throw new OfferingNotFoundException("The CD Offering could not be located");
         }
         CDOffering cdOffering = MeritBank.getCDOfferingById(cdAccountDTO.getCDOffering().getId());
         CDAccount cdAccount = new CDAccount(cdOffering, cdAccountDTO.getBalance());

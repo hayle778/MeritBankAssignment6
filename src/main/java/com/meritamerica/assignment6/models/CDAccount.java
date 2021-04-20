@@ -26,6 +26,8 @@ public class CDAccount extends BankAccount {
 
     public int getTerm() { return this.cdOffering.getTerm(); }
 
+    public CDOffering getCdOffering() { return this.cdOffering; }
+
     public static CDAccount readFromString(String accountData) throws ParseException {
         String[] temp = accountData.split(",");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
