@@ -51,9 +51,6 @@ public class AccountHolder implements Comparable<AccountHolder> {
 
     //region Constructors
 
-    /** no arguments constructor to be used by spring boot */
-    public AccountHolder() {}
-
     /**
      * the main constructor of the account holder class that sets the personal details
      * of the account holder and initializes ArrayList to hold their accounts

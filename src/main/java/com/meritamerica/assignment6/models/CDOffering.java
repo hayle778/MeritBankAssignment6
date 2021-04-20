@@ -7,11 +7,8 @@ public class CDOffering {
     protected int term;
     private static int nextId = 1;
 
-    public CDOffering(){
-    }
-
     public CDOffering(int term, double interestRate){
-        this.id = getNextId();
+        this.id = nextId++;
         this.interestRate = interestRate;
         this.term = term;
     }
