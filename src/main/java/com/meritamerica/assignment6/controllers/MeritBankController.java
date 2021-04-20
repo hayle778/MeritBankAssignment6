@@ -1,5 +1,6 @@
 package com.meritamerica.assignment6.controllers;
 
+import com.meritamerica.assignment6.dto.CDAccountDTO;
 import com.meritamerica.assignment6.exceptions.*;
 import com.meritamerica.assignment6.models.*;
 import org.slf4j.Logger;
@@ -198,18 +199,21 @@ public class MeritBankController {
      * account.
      *
      * @param id the path variable to an individual account holder.
-     * @param cdAccount the cd account to be posted to the API.
+     * @param cdAccountDTO the cd account to be posted to the API.
      * @return the cd account posted to the API.
      */
     @PostMapping(value="AccountHolders/{id}/CDAccounts")
     @ResponseStatus(HttpStatus.CREATED)
-    public CDAccount postCDAccountById(@PathVariable("id") int id, @RequestBody @Valid CDAccount cdAccount)
+    public CDAccount postCDAccountById(@PathVariable("id") int id, @RequestBody @Valid CDAccountDTO cdAccountDTO)
             throws ExceedsFraudSuspicionLimitException, AccountHolderNotFoundException {
 
         AccountHolder accountHolder = MeritBank.getAccountHolderbyId(id);
         if (accountHolder == null) {
             throw new AccountHolderNotFoundException("CD Account failed to Post: Account Holder could not be located");
         }
+        CDOffering cdOffering = MeritBank.getCDOfferingById(cdAccountDTO.getCDOffering().getId());
+        CDAccount cdAccount = new CDAccount(cdOffering, cdAccountDTO.getBalance());
+
         accountHolder.addCDAccount(cdAccount);
         return cdAccount;
     }
