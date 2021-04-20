@@ -7,15 +7,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
+/**
+ * this abstract class represents the basic object and values of a bank account
+ */
 public abstract class BankAccount {
 
     // region instance variables
+    /** the date this account was created on */
     protected Date openedOn;
+    /** the account number associated with this bank account */
     protected Long accountNumber;
+    /** the interest rate of this bank account */
     protected double interestRate;
+    /** the balance of this bank account */
     protected double balance;
 
+    /** a list of the transactions associated with this bank account */
     @JsonIgnore
     private final ArrayList<Transaction> transactions = new ArrayList<>();
     // endregion
@@ -50,6 +57,13 @@ public abstract class BankAccount {
 
     public Date getOpenedOn() { return this.openedOn; }
 
+    /**
+     * this method withdraws the requested amount from this bank account if the accounts
+     * balance is greater than the withdrawal amount
+     *
+     * @param amount the amount to be withdrawn
+     * @return a boolean determining if the transaction was successful or not
+     */
     public boolean withdraw(double amount){
         if (this.balance - amount < 0) {
             return false;
@@ -59,6 +73,13 @@ public abstract class BankAccount {
         }
     }
 
+    /**
+     * this method deposits the requested amount from this bank account if the request is for
+     * a positive amount
+     *
+     * @param amount the amount to be deposited
+     * @return a boolean determining if the transaction was successful or not
+     */
     public boolean deposit (double amount){
         if (amount < 0) {
             return false;
@@ -68,10 +89,21 @@ public abstract class BankAccount {
         }
     }
 
+    /**
+     * this method adds a transaction that has been completed or requested on this bank
+     * account
+     *
+     * @param transaction the transaction being added to this account
+     */
     public void addTransaction(Transaction transaction) {
         this.transactions.add(transaction);
     }
 
+    /**
+     * this method returns all transactions associated with this account
+     *
+     * @return all the transactions associated with this account
+     */
     public List<Transaction> getTransactions() { return transactions; }
     // endregion
 
@@ -86,5 +118,11 @@ public abstract class BankAccount {
     }
     // endregion
 
+    /**
+     * the future value of this account based on the amount of years passed in
+     *
+     * @param years the amount of years you want to calculate the future value for
+     * @return the future value of this account in x years
+     */
     public double futureValue(int years) { return MeritBank.recursiveFutureValue(this.balance, this.interestRate, years); }
 }
