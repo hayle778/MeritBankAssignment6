@@ -7,7 +7,7 @@ import java.util.Date;
 public class SavingsAccount extends BankAccount {
 
     public SavingsAccount() {
-        super();
+        super(MeritBank.getNextAccountNumber(), 0, MeritBank.SAVINGS_INTEREST_RATE, new Date());
     }
 
     public SavingsAccount(double openingBalance) {

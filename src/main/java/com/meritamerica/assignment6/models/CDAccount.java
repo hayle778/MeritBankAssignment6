@@ -10,7 +10,7 @@ public class CDAccount extends BankAccount {
     protected int term;
 
     public CDAccount() {
-        super();
+        super(MeritBank.getNextAccountNumber(), 0, new Date());
     }
 
     public CDAccount(CDOffering cdOffering, double balance) {
