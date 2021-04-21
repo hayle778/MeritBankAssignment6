@@ -1,4 +1,4 @@
-package com.meritamerica.assignment6;
+package com.meritamerica.assignment6.controllers;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
