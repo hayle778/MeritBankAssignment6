@@ -3,6 +3,7 @@ package com.meritamerica.assignment6.models;
 import com.meritamerica.assignment6.exceptions.ExceedsAvailableBalanceException;
 import com.meritamerica.assignment6.exceptions.ExceedsFraudSuspicionLimitException;
 import com.meritamerica.assignment6.exceptions.NegativeAmountException;
+import com.meritamerica.assignment6.exceptions.TermNotReachedException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -104,5 +105,5 @@ public abstract class Transaction {
     public void setRejectionReason(String reason) { this.reason = reason; }
     // endregion
 
-    public abstract void process() throws NegativeAmountException, ExceedsAvailableBalanceException, ExceedsFraudSuspicionLimitException;
+    public abstract void process() throws NegativeAmountException, ExceedsAvailableBalanceException, ExceedsFraudSuspicionLimitException, TermNotReachedException;
 }

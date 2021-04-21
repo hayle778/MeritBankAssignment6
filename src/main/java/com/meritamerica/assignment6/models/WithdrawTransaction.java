@@ -3,6 +3,7 @@ package com.meritamerica.assignment6.models;
 import com.meritamerica.assignment6.exceptions.ExceedsAvailableBalanceException;
 import com.meritamerica.assignment6.exceptions.ExceedsFraudSuspicionLimitException;
 import com.meritamerica.assignment6.exceptions.NegativeAmountException;
+import com.meritamerica.assignment6.exceptions.TermNotReachedException;
 
 public class WithdrawTransaction extends Transaction {
 
@@ -12,7 +13,7 @@ public class WithdrawTransaction extends Transaction {
     }
 
     @Override
-    public void process() throws NegativeAmountException, ExceedsAvailableBalanceException, ExceedsFraudSuspicionLimitException {
+    public void process() throws NegativeAmountException, ExceedsAvailableBalanceException, ExceedsFraudSuspicionLimitException, TermNotReachedException {
         if (amount > MeritBank.FRAUD_SUSPICION_THRESHOLD) throw new ExceedsFraudSuspicionLimitException("Possible fraud detected on withdrawal");
         if (amount < 0) throw new NegativeAmountException("Withdrawal amount must be greater than zero");
         if (amount > targetAccount.getBalance()) throw new ExceedsAvailableBalanceException("Insufficient funds for withdrawal amount");
