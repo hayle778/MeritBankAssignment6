@@ -8,7 +8,7 @@ public class CDOffering {
     private static int nextId = 1;
 
     /** the id of an individual cd offering */
-    protected int id;
+    protected long id;
     /** the interest rate of the offering */
     protected double interestRate;
     /** the term of the offering */
@@ -30,9 +30,9 @@ public class CDOffering {
 
     public double getInterestRate() { return this.interestRate; }
 
-    public int getId() { return this.id; }
+    public long getId() { return this.id; }
 
-    private static int getNextId() { return nextId++; }
+    private static long getNextId() { return nextId++; }
 
     static CDOffering readFromString(String cdOfferingDataString){
         String[] temp = cdOfferingDataString.split(",");

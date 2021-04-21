@@ -56,7 +56,7 @@ public class CDOfferingsController {
      */
     @GetMapping(value="CDOfferings/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CDOffering getCDOfferingById(@PathVariable("id") int id) throws OfferingNotFoundException {
+    public CDOffering getCDOfferingById(@PathVariable("id") long id) throws OfferingNotFoundException {
         if (id > MeritBank.getCDOfferings().size()) {
             throw new OfferingNotFoundException("CD Offering cannot be located");
         }

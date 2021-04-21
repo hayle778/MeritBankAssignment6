@@ -23,6 +23,7 @@ public class BankAccountsController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    //region Checking Accounts
     /**
      * This method takes in a checking account of an individual account holder designated
      * by the path variable and post it to the API of Merit Bank and returns the checking
@@ -61,7 +62,9 @@ public class BankAccountsController {
         }
         return accountHolder.getCheckingAccounts();
     }
+    //endregion
 
+    //region Savings Accounts
     /**
      * This method takes in a savings account of an individual account holder designated
      * by the path variable and post it to the API of Merit Bank and returns the savings
@@ -100,6 +103,9 @@ public class BankAccountsController {
         }
         return accountHolder.getSavingsAccounts();
     }
+    //endregion
+
+    //region CD Accounts
     /**
      * This method takes in a cd account of an individual account holder designated
      * by the path variable and post it to the API of Merit Bank and returns the cd
@@ -145,4 +151,5 @@ public class BankAccountsController {
         }
         return accountHolder.getCDAccounts();
     }
+    //endregion
 }

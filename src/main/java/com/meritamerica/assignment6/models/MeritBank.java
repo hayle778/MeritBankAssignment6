@@ -135,7 +135,7 @@ public class MeritBank {
      * @param id the id associated with an individual account holder
      * @return the account holder requested by their id
      */
-    public static AccountHolder getAccountHolderbyId(int id) {
+    public static AccountHolder getAccountHolderbyId(long id) {
         for (AccountHolder accountHolder : accountHolders) {
             if (accountHolder.getId() == id) {
                 return accountHolder;
@@ -151,7 +151,7 @@ public class MeritBank {
      */
     public static List<CDOffering> getCDOfferings() { return cdOfferings; }
 
-    public static CDOffering getCDOfferingById(int id) {
+    public static CDOffering getCDOfferingById(long id) {
         for (CDOffering cdOffering: cdOfferings) {
             if (id == cdOffering.getId()) {
                 return cdOffering;

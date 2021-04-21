@@ -3,6 +3,10 @@ package com.meritamerica.assignment6.models;
 import com.meritamerica.assignment6.exceptions.ExceedsCombinedBalanceLimitException;
 import com.meritamerica.assignment6.exceptions.ExceedsFraudSuspicionLimitException;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -13,6 +17,7 @@ import java.util.List;
  * basic information of the account holders personal details as well as lists
  * of objects of their various accounts held by Merit Bank.
  */
+//@Entity
 public class AccountHolder implements Comparable<AccountHolder> {
 
     //region GlobalVariables
@@ -21,7 +26,9 @@ public class AccountHolder implements Comparable<AccountHolder> {
 
     //region InstanceVariables
     /** The id of an account holder which is used to locate them by the API */
-    private int id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
     /** an account holders first name */
     @NotNull(message = "First name is a required field")
@@ -105,11 +112,11 @@ public class AccountHolder implements Comparable<AccountHolder> {
         this.SSN = ssn;
     }
 
-    public int getId() { return this.id; }
+    public long getId() { return this.id; }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(long id) { this.id = id; }
 
-    private static int getNextId() { return nextId++; }
+    private static long getNextId() { return nextId++; }
     //endregion
 
 

@@ -56,7 +56,7 @@ public class AccountHoldersController {
      */
     @GetMapping(value="/AccountHolders/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public AccountHolder getAccountHolderById(@PathVariable("id") int id) throws AccountHolderNotFoundException {
+    public AccountHolder getAccountHolderById(@PathVariable("id") long id) throws AccountHolderNotFoundException {
         AccountHolder accountHolder = MeritBank.getAccountHolderbyId(id);
         if (accountHolder == null)  {
             throw new AccountHolderNotFoundException("Account not found");
