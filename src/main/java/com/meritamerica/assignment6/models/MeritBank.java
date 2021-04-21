@@ -4,6 +4,7 @@ package com.meritamerica.assignment6.models;
 import com.meritamerica.assignment6.exceptions.ExceedsAvailableBalanceException;
 import com.meritamerica.assignment6.exceptions.ExceedsFraudSuspicionLimitException;
 import com.meritamerica.assignment6.exceptions.NegativeAmountException;
+import com.meritamerica.assignment6.exceptions.TermNotReachedException;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -283,13 +284,14 @@ public class MeritBank {
      * @param transaction the transaction being processed
      * @return a boolean that records that the transaction has been processed
      */
-    public static boolean processTransaction(Transaction transaction) throws NegativeAmountException, ExceedsAvailableBalanceException, ExceedsFraudSuspicionLimitException {
+    public static boolean processTransaction(Transaction transaction) throws NegativeAmountException,
+            ExceedsAvailableBalanceException, ExceedsFraudSuspicionLimitException, TermNotReachedException {
         try{
             if (transaction.getTransactionDate() == null) {
                 transaction.setTransactionDate(new Date());
             }
             transaction.process();
-        } catch (ExceedsFraudSuspicionLimitException e){
+        } catch (ExceedsFraudSuspicionLimitException | TermNotReachedException e){
             transaction.setProcessedByFraudTeam(true);
             fraudQueue.addTransaction(transaction);
             throw e;
