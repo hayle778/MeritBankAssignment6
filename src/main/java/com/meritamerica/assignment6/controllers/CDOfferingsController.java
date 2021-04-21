@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 /**
- * This controller class allows cd offerings of Merit Bank to posted and retrieve from
+ * This controller class allows cd offerings of Merit Bank to posted and retrieved from
  * Merit Banks API.
  */
 @RestController
