@@ -1,6 +1,5 @@
 package com.meritamerica.assignment6.controllers;
 
-import com.meritamerica.assignment6.dto.CDAccountDTO;
 import com.meritamerica.assignment6.exceptions.*;
 import com.meritamerica.assignment6.models.*;
 import org.slf4j.Logger;
@@ -8,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 /**
  * This controller class allows cd offerings of Merit Bank to posted and retrieve from
