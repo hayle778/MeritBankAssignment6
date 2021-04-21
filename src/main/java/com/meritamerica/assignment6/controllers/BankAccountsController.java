@@ -1,7 +1,10 @@
 package com.meritamerica.assignment6.controllers;
 
 import com.meritamerica.assignment6.dto.CDAccountDTO;
-import com.meritamerica.assignment6.exceptions.*;
+import com.meritamerica.assignment6.exceptions.AccountHolderNotFoundException;
+import com.meritamerica.assignment6.exceptions.ExceedsCombinedBalanceLimitException;
+import com.meritamerica.assignment6.exceptions.ExceedsFraudSuspicionLimitException;
+import com.meritamerica.assignment6.exceptions.OfferingNotFoundException;
 import com.meritamerica.assignment6.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,111 +13,15 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+
 /**
- * This controller class allows cd offerings, account holders and accounts associated with
- * an account holder to be created and retrieved from the web services provided by the API.
+ * This controller class allows bank accounts associated with account holders to
+ * be posted and retrieved from Merit Banks API.
  */
 @RestController
-public class MeritBankController {
+public class BankAccountsController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    //region CDOffering
-    /**
-     * This method takes in a cd offering and post it to the API of Merit Bank and
-     * returns the cd offering.
-     *
-     * @param cdOffering the cd offering to be posted to the API.
-     * @return the cd offering posted to the API.
-     */
-    @PostMapping(value="/CDOfferings")
-    @ResponseStatus(HttpStatus.CREATED)
-    public CDOffering postCDOffering(@RequestBody CDOffering cdOffering) throws InvalidArgumentException {
-        if (cdOffering.getInterestRate() <= 0 || cdOffering.getInterestRate() >= 1 || cdOffering.getTerm() < 1) {
-            throw new InvalidArgumentException("Invalid Term or Interest Rate");
-        }
-        MeritBank.addCDOffering(cdOffering);
-        return cdOffering;
-    }
-
-    /**
-     * This method retrieves an array of all the cd offerings available from Merit Bank.
-     *
-     * @return an array of Merit Banks cd offerings.
-     */
-    @GetMapping(value="/CDOfferings")
-    @ResponseStatus(HttpStatus.OK)
-    public List<CDOffering> getCDOfferings() throws OfferingNotFoundException {
-        if (MeritBank.getCDOfferings().size() < 1) {
-            throw new OfferingNotFoundException("No CD Offerings exist");
-        }
-        return MeritBank.getCDOfferings();
-    }
-
-    /**
-     * This method retrieves a single cd offering from a given id from Merit Bank.
-     *
-     * @param id the path variable to an individual cd offering.
-     * @return the requested cd offering from Merit Bank
-     */
-    @GetMapping(value="CDOfferings/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public CDOffering getCDOfferingById(@PathVariable("id") int id) throws OfferingNotFoundException {
-        if (id > MeritBank.getCDOfferings().size()) {
-            throw new OfferingNotFoundException("CD Offering cannot be located");
-        }
-        return MeritBank.getCDOfferingById(id);
-    }
-    //endregion
-
-    //region AccountHolder/s
-
-    /**
-     * This method takes in a account holder and post it to the API of Merit Bank and
-     * returns the account holder.
-     *
-     * @param accountHolder the account holder to be posted to the API.
-     * @return the account holder posted to the API.
-     */
-    @PostMapping(value="/AccountHolders")
-    @ResponseStatus(HttpStatus.CREATED)
-    public AccountHolder postAccountHolder(@RequestBody @Valid AccountHolder accountHolder) {
-        MeritBank.addAccountHolder(accountHolder);
-        return accountHolder;
-    }
-
-    /**
-     * This method retrieves an array of all of Merit Banks account holders.
-     *
-     * @return an array of Merit Banks account holders.
-     */
-    @GetMapping(value="/AccountHolders")
-    @ResponseStatus(HttpStatus.OK)
-    public List<AccountHolder> getAccountHolders() throws AccountHolderNotFoundException {
-        if (MeritBank.getAccountHolders().size() < 1) {
-            throw new AccountHolderNotFoundException("No Account Holders exist");
-        }
-        return MeritBank.getAccountHolders();
-    }
-
-    /**
-     * This method retrieves a single account holder from a given id from Merit Bank.
-     *
-     * @param id the path variable to an individual account holder of Merit Bank.
-     * @return the requested account holder of Merit Bank.
-     */
-    @GetMapping(value="/AccountHolders/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public AccountHolder getAccountHolderById(@PathVariable("id") int id) throws AccountHolderNotFoundException {
-        AccountHolder accountHolder = MeritBank.getAccountHolderbyId(id);
-        if (accountHolder == null)  {
-            throw new AccountHolderNotFoundException("Account not found");
-        }
-        return accountHolder;
-    }
-    //endregion
-
-    //region AccountHolders/BankAccounts
 
     /**
      * This method takes in a checking account of an individual account holder designated
@@ -238,8 +145,4 @@ public class MeritBankController {
         }
         return accountHolder.getCDAccounts();
     }
-    //endregion
-
-
-
 }
