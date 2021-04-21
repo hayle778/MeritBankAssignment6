@@ -16,7 +16,7 @@ import java.util.List;
  * Merit Banks API.
  */
 @RestController
-public class AccountHolderController {
+public class AccountHoldersController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
