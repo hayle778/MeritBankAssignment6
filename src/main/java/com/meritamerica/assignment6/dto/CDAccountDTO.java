@@ -2,9 +2,15 @@ package com.meritamerica.assignment6.dto;
 
 import com.meritamerica.assignment6.models.CDOffering;
 
+/**
+ * this is a wrapper class for cd accounts which has been primarily created to facilitate
+ * the transfer of data of cd accounts through the API
+ */
 public class CDAccountDTO{
 
+    /** the balance of the cd acountt */
     private double balance;
+    /** the cd offering associated with the cd account */
     private CDOffering cdOffering;
 
     public CDAccountDTO() {}

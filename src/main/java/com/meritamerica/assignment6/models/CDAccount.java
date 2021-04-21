@@ -1,12 +1,21 @@
 package com.meritamerica.assignment6.models;
 
+import com.meritamerica.assignment6.exceptions.TermNotReachedException;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * this class represents cd accounts of account holders at Merit Bank and contains a cd
+ * offering which consists of a term and interest rate that is associated with this
+ * account.
+ */
 public class CDAccount extends BankAccount {
 
+    /** the cd offering associated with this account */
     protected CDOffering cdOffering;
+    /** the term in years associated with this account */
     protected int term;
 
     public CDAccount() {
@@ -46,6 +55,13 @@ public class CDAccount extends BankAccount {
     @Override
     public String writeToString() { return super.writeToString() + "," + this.cdOffering.getTerm(); }
 
+    /**
+     * this method returns true and deposits the requested amount into this cd account if the account
+     * has reached the end of its term.
+     *
+     * @param amount the amount to be deposited
+     * @return a boolean determining if the transaction was successful or not
+     */
     @Override
     public boolean deposit(double amount) {
         Date currentDate = new Date();
@@ -57,15 +73,23 @@ public class CDAccount extends BankAccount {
         return false;
     }
 
+    /**
+     * this method withdraws the requested amount from this cd account if the account
+     * has reached maturity
+     *
+     * @param amount the amount to be withdrawn
+     * @return a boolean determining if the transaction was successful or not
+     */
     @Override
-    public boolean withdraw(double amount) {
+    public boolean withdraw(double amount) throws TermNotReachedException {
         Date currentDate = new Date();
         int currentTermYear = openedOn.getYear() - currentDate.getYear();
-        if (currentTermYear > term && amount <= this.getBalance() && amount > 0) {
+        if (!(currentTermYear > term && amount <= this.getBalance() && amount > 0)) {
+            throw new TermNotReachedException("This CD Account has not reached maturity.");
+        } else {
             balance -= amount;
             return true;
         }
-        return false;
     }
 
 

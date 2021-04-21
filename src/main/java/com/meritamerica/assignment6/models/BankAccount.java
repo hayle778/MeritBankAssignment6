@@ -1,6 +1,7 @@
 package com.meritamerica.assignment6.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.meritamerica.assignment6.exceptions.TermNotReachedException;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public abstract class BankAccount {
      * @param amount the amount to be withdrawn
      * @return a boolean determining if the transaction was successful or not
      */
-    public boolean withdraw(double amount){
+    public boolean withdraw(double amount) throws TermNotReachedException {
         if (this.balance - amount < 0) {
             return false;
         } else {
@@ -74,13 +75,13 @@ public abstract class BankAccount {
     }
 
     /**
-     * this method deposits the requested amount from this bank account if the request is for
+     * this method deposits the requested amount into this bank account if the request is for
      * a positive amount
      *
      * @param amount the amount to be deposited
      * @return a boolean determining if the transaction was successful or not
      */
-    public boolean deposit (double amount){
+    public boolean deposit (double amount) {
         if (amount < 0) {
             return false;
         } else {
