@@ -3,10 +3,7 @@ package com.meritamerica.assignment6.models;
 import com.meritamerica.assignment6.exceptions.ExceedsCombinedBalanceLimitException;
 import com.meritamerica.assignment6.exceptions.ExceedsFraudSuspicionLimitException;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -17,36 +14,41 @@ import java.util.List;
  * basic information of the account holders personal details as well as lists
  * of objects of their various accounts held by Merit Bank.
  */
-//@Entity
+@Entity
+@Table(name = "account_holders")
 public class AccountHolder implements Comparable<AccountHolder> {
 
-    //region GlobalVariables
-    private static int nextId = 1;
-    //endregion
-
     //region InstanceVariables
-    /** The id of an account holder which is used to locate them by the API */
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
+    /** The primary key of an account holder which is used to locate them by the API */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id", nullable = false)
     private long id;
 
     /** an account holders first name */
     @NotNull(message = "First name is a required field")
     @NotBlank(message = "First name cannot be left blank")
+    @Column(name = "first_name")
     private String firstName;
 
     /** an account holders middle name */
+    @Column(name = "middle_name")
     private String middleName;
 
     /** an account holders last name */
     @NotNull(message = "Last name is a required field")
     @NotBlank(message = "Last name cannot be left blank")
+    @Column(name = "last_name")
     private String lastName;
 
     /** an account holders social security number */
     @NotNull(message = "SSN is a required field")
     @NotBlank(message = "SSN cannot be left blank")
+    @Column(name = "ssn")
     private String SSN;
+
+    /** an object that contains the account holders contact information */
+    private AccountHolderContactDetails contactInformation;
 
     /** a list of the account holders checking accounts held by Merit Bank */
     private List<CheckingAccount> checkingAccounts;
@@ -68,7 +70,6 @@ public class AccountHolder implements Comparable<AccountHolder> {
      * @param SSN the account holders social security number
      */
     public AccountHolder(String firstName, String middleName, String lastName, String SSN) {
-        this.id = getNextId();
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
@@ -116,7 +117,13 @@ public class AccountHolder implements Comparable<AccountHolder> {
 
     public void setId(long id) { this.id = id; }
 
-    private static long getNextId() { return nextId++; }
+    public AccountHolderContactDetails getAccountHolderContactDetails() {
+        return this.contactInformation;
+    }
+
+    public void setAccountHolderContactDetails(AccountHolderContactDetails contactInformation) {
+        this.contactInformation = contactInformation;
+    }
     //endregion
 
 

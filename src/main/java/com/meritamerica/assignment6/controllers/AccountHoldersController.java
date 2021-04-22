@@ -3,6 +3,7 @@ package com.meritamerica.assignment6.controllers;
 import com.meritamerica.assignment6.exceptions.AccountHolderNotFoundException;
 import com.meritamerica.assignment6.models.AccountHolder;
 import com.meritamerica.assignment6.models.MeritBank;
+import com.meritamerica.assignment6.repositories.AccountHoldersRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,8 @@ import java.util.List;
  */
 @RestController
 public class AccountHoldersController {
+
+    AccountHoldersRepository accountHoldersRepository;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -42,10 +45,10 @@ public class AccountHoldersController {
     @GetMapping(value="/AccountHolders")
     @ResponseStatus(HttpStatus.OK)
     public List<AccountHolder> getAccountHolders() throws AccountHolderNotFoundException {
-        if (MeritBank.getAccountHolders().size() < 1) {
-            throw new AccountHolderNotFoundException("No Account Holders exist");
-        }
-        return MeritBank.getAccountHolders();
+//        if (MeritBank.getAccountHolders().size() < 1) {
+//            throw new AccountHolderNotFoundException("No Account Holders exist");
+//        }
+        return accountHoldersRepository.findAll();
     }
 
     /**

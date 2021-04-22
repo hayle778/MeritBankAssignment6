@@ -1,6 +1,7 @@
 package com.meritamerica.assignment6.dto;
 
 import com.meritamerica.assignment6.models.CDOffering;
+import com.meritamerica.assignment6.models.MeritBank;
 
 /**
  * this is a wrapper class for cd accounts which has been primarily created to facilitate
@@ -8,16 +9,19 @@ import com.meritamerica.assignment6.models.CDOffering;
  */
 public class CDAccountDTO{
 
-    /** the balance of the cd acountt */
+    /** the id of the cd offering */
+    private long id;
+    /** the balance of the cd account */
     private double balance;
     /** the cd offering associated with the cd account */
     private CDOffering cdOffering;
 
     public CDAccountDTO() {}
 
-    public CDAccountDTO(double balance, CDOffering cdOffering) {
+    public CDAccountDTO(double balance, long id) {
         this.balance = balance;
-        this.cdOffering = cdOffering;
+        this.id = id;
+        this.cdOffering = MeritBank.getCDOfferingById(id);
     }
 
     public double getBalance() { return this.balance; }
