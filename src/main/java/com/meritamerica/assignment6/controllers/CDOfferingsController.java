@@ -2,8 +2,10 @@ package com.meritamerica.assignment6.controllers;
 
 import com.meritamerica.assignment6.exceptions.*;
 import com.meritamerica.assignment6.models.*;
+import com.meritamerica.assignment6.repositories.CDOfferingRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,10 @@ import java.util.List;
 public class CDOfferingsController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    /** the database of cd offerings */
+    @Autowired
+    CDOfferingRepository cdOfferingRepository;
 
     /**
      * This method takes in a cd offering and post it to the API of Merit Bank and
@@ -30,8 +36,7 @@ public class CDOfferingsController {
         if (cdOffering.getInterestRate() <= 0 || cdOffering.getInterestRate() >= 1 || cdOffering.getTerm() < 1) {
             throw new InvalidArgumentException("Invalid Term or Interest Rate");
         }
-        MeritBank.addCDOffering(cdOffering);
-        return cdOffering;
+        return cdOfferingRepository.save(cdOffering);
     }
 
     /**
@@ -41,11 +46,8 @@ public class CDOfferingsController {
      */
     @GetMapping(value="/CDOfferings")
     @ResponseStatus(HttpStatus.OK)
-    public List<CDOffering> getCDOfferings() throws OfferingNotFoundException {
-        if (MeritBank.getCDOfferings().size() < 1) {
-            throw new OfferingNotFoundException("No CD Offerings exist");
-        }
-        return MeritBank.getCDOfferings();
+    public List<CDOffering> getCDOfferings() {
+        return cdOfferingRepository.findAll();
     }
 
     /**
@@ -56,12 +58,7 @@ public class CDOfferingsController {
      */
     @GetMapping(value="CDOfferings/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CDOffering getCDOfferingById(@PathVariable("id") long id) throws OfferingNotFoundException {
-        if (id > MeritBank.getCDOfferings().size()) {
-            throw new OfferingNotFoundException("CD Offering cannot be located");
-        }
-        return MeritBank.getCDOfferingById(id);
+    public CDOffering getCDOfferingById(@PathVariable("id") long id) {
+        return cdOfferingRepository.getOne(id);
     }
-
-
 }

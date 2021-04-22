@@ -1,10 +1,18 @@
 package com.meritamerica.assignment6.models;
 
+import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Entity
 public class CheckingAccount extends BankAccount {
+
+    /** the primary key for checking accounts */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private long id;
 
     public CheckingAccount() {
         super(MeritBank.getNextAccountNumber(), 0, MeritBank.CHECKING_INTEREST_RATE, new Date());
@@ -18,7 +26,11 @@ public class CheckingAccount extends BankAccount {
         super(accountNumber, balance, interestRate, openedOn);
     }
 
-    static CheckingAccount readFromString(String accountData) throws ParseException{
+    public long getId() { return this.id; }
+
+    public void setId() { this.id = id; }
+
+    public static CheckingAccount readFromString(String accountData) throws ParseException{
         String[] temp = accountData.split(",");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 

@@ -2,10 +2,13 @@ package com.meritamerica.assignment6.controllers;
 
 import com.meritamerica.assignment6.exceptions.AccountHolderNotFoundException;
 import com.meritamerica.assignment6.models.AccountHolder;
+import com.meritamerica.assignment6.models.AccountHolderContactDetails;
 import com.meritamerica.assignment6.models.MeritBank;
+import com.meritamerica.assignment6.repositories.AccountHoldersContactDetailsRepository;
 import com.meritamerica.assignment6.repositories.AccountHoldersRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,51 +22,94 @@ import java.util.List;
 @RestController
 public class AccountHoldersController {
 
-    AccountHoldersRepository accountHoldersRepository;
-
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /** the database of account holders */
+    @Autowired
+    AccountHoldersRepository accountHoldersRepository;
+
+    /** the database of the contact information of account holders */
+    @Autowired
+    AccountHoldersContactDetailsRepository accountHoldersContactDetailsRepository;
+
+
+
     /**
-     * This method takes in a account holder and post it to the API of Merit Bank and
+     * this method takes in a account holder and post it to the API of Merit Bank and
      * returns the account holder.
      *
-     * @param accountHolder the account holder to be posted to the API.
-     * @return the account holder posted to the API.
+     * @param accountHolder the account holder to be posted to the API
+     * @return the account holder posted to the API
      */
     @PostMapping(value="/AccountHolders")
     @ResponseStatus(HttpStatus.CREATED)
     public AccountHolder postAccountHolder(@RequestBody @Valid AccountHolder accountHolder) {
-        MeritBank.addAccountHolder(accountHolder);
-        return accountHolder;
+        return accountHoldersRepository.save(accountHolder);
     }
 
     /**
-     * This method retrieves an array of all of Merit Banks account holders.
+     * this method retrieves an array of all of Merit Banks account holders.
      *
-     * @return an array of Merit Banks account holders.
+     * @return an array of Merit Banks account holders
      */
-    @GetMapping(value="/AccountHolders")
+    @GetMapping(value = "/AccountHolders")
     @ResponseStatus(HttpStatus.OK)
     public List<AccountHolder> getAccountHolders() throws AccountHolderNotFoundException {
-//        if (MeritBank.getAccountHolders().size() < 1) {
-//            throw new AccountHolderNotFoundException("No Account Holders exist");
-//        }
         return accountHoldersRepository.findAll();
     }
 
     /**
-     * This method retrieves a single account holder from a given id from Merit Bank.
+     * this method retrieves a single account holder from a given id from Merit Bank.
      *
-     * @param id the path variable to an individual account holder of Merit Bank.
-     * @return the requested account holder of Merit Bank.
+     * @param id the path variable to an individual account holder of Merit Bank
+     * @return the requested account holder of Merit Bank
      */
-    @GetMapping(value="/AccountHolders/{id}")
+    @GetMapping(value = "/AccountHolders/{id}")
     @ResponseStatus(HttpStatus.OK)
     public AccountHolder getAccountHolderById(@PathVariable("id") long id) throws AccountHolderNotFoundException {
-        AccountHolder accountHolder = MeritBank.getAccountHolderbyId(id);
-        if (accountHolder == null)  {
-            throw new AccountHolderNotFoundException("Account not found");
-        }
-        return accountHolder;
+        return accountHoldersRepository.getOne(id);
+    }
+
+
+    /**
+     * this method retrieves an array of all of Merit Banks account holders contact
+     * details.
+     *
+     * @param id the path variable to an individual account holders contact details
+     * @param contactDetails the contact details of an account holder
+     * @return an array of Merit Banks account holders contact details
+     */
+    @PostMapping(value = "/AccountHoldersContactDetails")
+    @ResponseStatus(HttpStatus.CREATED)
+    public AccountHolderContactDetails postContactDetails
+            (long id, @RequestBody @Valid AccountHolderContactDetails contactDetails) {
+        AccountHolder accountHolder = accountHoldersRepository.getOne(id);
+        accountHolder.setAccountHolderContactDetails(contactDetails);
+        return contactDetails;
+    }
+
+    /**
+     * this method retrieves an array of all the contact details for all of Merit
+     * Banks account holders
+     *
+     * @return an array of Merit Banks account holders contact details
+     */
+    @GetMapping(value = "/AccountHoldersContactDetails")
+    @ResponseStatus(HttpStatus.OK)
+    public List<AccountHolderContactDetails> getContactDetails() {
+        return accountHoldersContactDetailsRepository.findAll();
+    }
+
+    /**
+     * this method retrieves a single account holders contact details from a given id
+     * from Merit Bank.
+     *
+     * @param id the path variable to an individual account holders contact details
+     * @return the requested account holders contact details
+     */
+    @GetMapping(value = "/AccountHoldersContactDetails/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public AccountHolderContactDetails getContactDetailsById(@PathVariable("id") long id) {
+        return accountHoldersContactDetailsRepository.getOne(id);
     }
 }

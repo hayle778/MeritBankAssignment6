@@ -2,6 +2,9 @@ package com.meritamerica.assignment6.models;
 
 import com.meritamerica.assignment6.exceptions.TermNotReachedException;
 
+import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,11 +14,20 @@ import java.util.Date;
  * offering which consists of a term and interest rate that is associated with this
  * account.
  */
+@Entity
 public class CDAccount extends BankAccount {
 
+    /** the primary key for CD Accounts */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private long id;
+
     /** the cd offering associated with this account */
+    @NotNull
     protected CDOffering cdOffering;
-    /** the term in years associated with this account */
+    /** the term in years( associated with this account */
+    @Min(value = 1, message = "The minimum term of a cd offering is 1 year.")
     protected int term;
 
     public CDAccount() {
@@ -32,6 +44,10 @@ public class CDAccount extends BankAccount {
         this.cdOffering = new CDOffering(term, interestRate);
         this.term = term;
     }
+
+    public long getId() { return this.id; }
+
+    public void setId(long id) { this.id = id; }
 
     public int getTerm() { return this.cdOffering.getTerm(); }
 

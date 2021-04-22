@@ -6,8 +6,12 @@ import com.meritamerica.assignment6.exceptions.ExceedsCombinedBalanceLimitExcept
 import com.meritamerica.assignment6.exceptions.ExceedsFraudSuspicionLimitException;
 import com.meritamerica.assignment6.exceptions.OfferingNotFoundException;
 import com.meritamerica.assignment6.models.*;
+import com.meritamerica.assignment6.repositories.CDAccountRepository;
+import com.meritamerica.assignment6.repositories.CheckingAccountRepository;
+import com.meritamerica.assignment6.repositories.SavingsAccountRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +26,18 @@ import java.util.List;
 public class BankAccountsController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    /** the database of checking accounts */
+    @Autowired
+    CheckingAccountRepository checkingAccountRepository;
+
+    /** the database of savings accounts */
+    @Autowired
+    SavingsAccountRepository savingsAccountRepository;
+
+    /** the database of cd accounts */
+    @Autowired
+    CDAccountRepository cdAccountRepository;
 
     //region Checking Accounts
     /**
