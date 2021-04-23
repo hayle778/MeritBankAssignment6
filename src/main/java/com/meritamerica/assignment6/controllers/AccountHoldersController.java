@@ -3,7 +3,6 @@ package com.meritamerica.assignment6.controllers;
 import com.meritamerica.assignment6.exceptions.AccountHolderNotFoundException;
 import com.meritamerica.assignment6.models.AccountHolder;
 import com.meritamerica.assignment6.models.AccountHolderContactDetails;
-import com.meritamerica.assignment6.models.MeritBank;
 import com.meritamerica.assignment6.repositories.AccountHoldersContactDetailsRepository;
 import com.meritamerica.assignment6.repositories.AccountHoldersRepository;
 import org.slf4j.Logger;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This controller class allows account holders to be posted and retrieved from
@@ -66,8 +66,8 @@ public class AccountHoldersController {
      */
     @GetMapping(value = "/AccountHolders/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public AccountHolder getAccountHolderById(@PathVariable("id") long id) throws AccountHolderNotFoundException {
-        return accountHoldersRepository.getOne(id);
+    public Optional<AccountHolder> getAccountHolderById(@PathVariable("id") long id) throws AccountHolderNotFoundException {
+        return accountHoldersRepository.findById(id);
     }
 
 
