@@ -3,6 +3,10 @@ package com.meritamerica.assignment6.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.meritamerica.assignment6.exceptions.TermNotReachedException;
 
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,7 +15,21 @@ import java.util.List;
 /**
  * this abstract class represents the basic object and values of a bank account
  */
+@MappedSuperclass
 public abstract class BankAccount {
+
+    public AccountHolder getAccountHolder() {
+        return accountHolder;
+    }
+
+    public void setAccountHolder(AccountHolder accountHolder) {
+        this.accountHolder = accountHolder;
+    }
+
+    // join columns,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_holder_id")
+    private AccountHolder accountHolder;
 
     // region instance variables
     /** the date this account was created on */

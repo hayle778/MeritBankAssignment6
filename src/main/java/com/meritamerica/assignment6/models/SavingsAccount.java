@@ -1,9 +1,6 @@
 package com.meritamerica.assignment6.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,8 +9,7 @@ import java.util.Date;
 public class SavingsAccount extends BankAccount {
 
     @Id
-    @GeneratedValue
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
 

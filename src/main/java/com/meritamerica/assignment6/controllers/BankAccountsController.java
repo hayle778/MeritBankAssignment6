@@ -28,15 +28,15 @@ public class BankAccountsController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /** the database of checking accounts */
-    @Autowired
+    //@Autowired
     CheckingAccountRepository checkingAccountRepository;
 
     /** the database of savings accounts */
-    @Autowired
+    //@Autowired
     SavingsAccountRepository savingsAccountRepository;
 
     /** the database of cd accounts */
-    @Autowired
+    //@Autowired
     CDAccountRepository cdAccountRepository;
 
     //region Checking Accounts

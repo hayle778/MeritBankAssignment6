@@ -11,7 +11,6 @@ public class CheckingAccount extends BankAccount {
     /** the primary key for checking accounts */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     private long id;
 
     public CheckingAccount() {

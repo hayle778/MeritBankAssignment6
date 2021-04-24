@@ -3,12 +3,10 @@ package com.meritamerica.assignment6.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "contact_details")
 public class AccountHolderContactDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id")
     private long id;
 
 
@@ -27,12 +25,14 @@ public class AccountHolderContactDetails {
     @Column(name = "birth_date")
     private String birthDate;
 
-    private AccountHolder accountHolder;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "account_holder_id", referencedColumnName = "account_holder_id")
+//    private AccountHolder accountHolder;
 
     public AccountHolderContactDetails() { super(); }
 
     public AccountHolderContactDetails(AccountHolder accountHolder) {
-        this.accountHolder = accountHolder;
+//        this.accountHolder = accountHolder;
         this.firstName = accountHolder.getFirstName();
         this.middleName = accountHolder.getMiddleName();
         this.lastName = accountHolder.getLastName();

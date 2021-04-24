@@ -22,7 +22,6 @@ public class AccountHolder implements Comparable<AccountHolder> {
     /** The primary key of an account holder which is used to locate them by the API */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id", nullable = false)
     private long id;
 
     /** an account holders first name */
@@ -47,15 +46,22 @@ public class AccountHolder implements Comparable<AccountHolder> {
     @Column(name = "ssn")
     private String SSN;
 
-    /** an object that contains the account holders contact information */
-    private AccountHolderContactDetails contactInformation;
+//    /** an object that contains the account holders contact information */
+//    @JoinColumn
+//    @OneToOne(cascade = CascadeType.ALL)
+//    private AccountHolderContactDetails contactInformation;
 
     /** a list of the account holders checking accounts held by Merit Bank */
+    @OneToMany(mappedBy = "accountHolder")
     private List<CheckingAccount> checkingAccounts;
     /** a list of the account holders savings accounts held by Merit Bank */
+    @OneToMany(mappedBy = "accountHolder")
     private List<SavingsAccount> savingsAccounts;
     /** a list of the account holders cd accounts held by Merit Bank */
+    @OneToMany(mappedBy = "accountHolder")
     private List<CDAccount> cdAccounts;
+
+
     //endregion
 
     //region Constructors
@@ -70,6 +76,7 @@ public class AccountHolder implements Comparable<AccountHolder> {
      * @param SSN the account holders social security number
      */
     public AccountHolder(String firstName, String middleName, String lastName, String SSN) {
+        super();
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
@@ -117,13 +124,13 @@ public class AccountHolder implements Comparable<AccountHolder> {
 
     public void setId(long id) { this.id = id; }
 
-    public AccountHolderContactDetails getAccountHolderContactDetails() {
-        return this.contactInformation;
-    }
-
-    public void setAccountHolderContactDetails(AccountHolderContactDetails contactInformation) {
-        this.contactInformation = contactInformation;
-    }
+//    public AccountHolderContactDetails getAccountHolderContactDetails() {
+//        return this.contactInformation;
+//    }
+//
+//    public void setAccountHolderContactDetails(AccountHolderContactDetails contactInformation) {
+//        this.contactInformation = contactInformation;
+//    }
     //endregion
 
 

@@ -83,9 +83,8 @@ public class AccountHoldersController {
     @ResponseStatus(HttpStatus.CREATED)
     public AccountHolderContactDetails postContactDetails
             (long id, @RequestBody @Valid AccountHolderContactDetails contactDetails) {
-        AccountHolder accountHolder = accountHoldersRepository.getOne(id);
-        accountHolder.setAccountHolderContactDetails(contactDetails);
-        return contactDetails;
+       AccountHolder accountHolder = accountHoldersRepository.findById(id).orElse(null);
+       return accountHoldersContactDetailsRepository.save(contactDetails);
     }
 
     /**
@@ -109,7 +108,7 @@ public class AccountHoldersController {
      */
     @GetMapping(value = "/AccountHoldersContactDetails/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public AccountHolderContactDetails getContactDetailsById(@PathVariable("id") long id) {
-        return accountHoldersContactDetailsRepository.getOne(id);
+    public Optional<AccountHolderContactDetails> getContactDetailsById(@PathVariable("id") long id) {
+        return accountHoldersContactDetailsRepository.findById(id);
     }
 }

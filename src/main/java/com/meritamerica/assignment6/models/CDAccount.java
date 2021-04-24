@@ -20,11 +20,12 @@ public class CDAccount extends BankAccount {
     /** the primary key for CD Accounts */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     private long id;
 
     /** the cd offering associated with this account */
     @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cd_offering_id")
     protected CDOffering cdOffering;
     /** the term in years( associated with this account */
     @Min(value = 1, message = "The minimum term of a cd offering is 1 year.")
