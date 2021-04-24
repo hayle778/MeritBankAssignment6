@@ -18,20 +18,11 @@ import java.util.List;
 @MappedSuperclass
 public abstract class BankAccount {
 
-    public AccountHolder getAccountHolder() {
-        return accountHolder;
-    }
-
-    public void setAccountHolder(AccountHolder accountHolder) {
-        this.accountHolder = accountHolder;
-    }
-
-    // join columns,
+    /** the account holder associated with any number of bank accounts */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_holder_id")
     private AccountHolder accountHolder;
 
-    // region instance variables
     /** the date this account was created on */
     protected Date openedOn;
     /** the account number associated with this bank account */
@@ -75,6 +66,14 @@ public abstract class BankAccount {
     public double getInterestRate() { return this.interestRate; }
 
     public Date getOpenedOn() { return this.openedOn; }
+
+    public AccountHolder getAccountHolder() {
+        return accountHolder;
+    }
+
+    public void setAccountHolder(AccountHolder accountHolder) {
+        this.accountHolder = accountHolder;
+    }
 
     /**
      * this method withdraws the requested amount from this bank account if the accounts

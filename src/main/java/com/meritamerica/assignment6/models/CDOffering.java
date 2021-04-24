@@ -14,12 +14,6 @@ import javax.validation.constraints.Positive;
 @Entity
 public class CDOffering {
 
-    private static int nextId = 1;
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     /** the id of an individual cd offering */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,12 +28,9 @@ public class CDOffering {
 
 
 
-    public CDOffering() {
-        this.id = getNextId();
-    }
+    public CDOffering() {}
 
     public CDOffering(int term, double interestRate){
-        this.id = nextId++;
         this.interestRate = interestRate;
         this.term = term;
     }
@@ -50,7 +41,7 @@ public class CDOffering {
 
     public long getId() { return this.id; }
 
-    private static long getNextId() { return nextId++; }
+    public void setId(long id) { this.id = id; }
 
     static CDOffering readFromString(String cdOfferingDataString){
         String[] temp = cdOfferingDataString.split(",");
