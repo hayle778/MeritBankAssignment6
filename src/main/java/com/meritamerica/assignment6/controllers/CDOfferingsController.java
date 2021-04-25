@@ -59,6 +59,6 @@ public class CDOfferingsController {
     @GetMapping(value="CDOfferings/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CDOffering getCDOfferingById(@PathVariable("id") long id) {
-        return cdOfferingRepository.findById(id).orElse(null);
+        return cdOfferingRepository.findById(id);
     }
 }

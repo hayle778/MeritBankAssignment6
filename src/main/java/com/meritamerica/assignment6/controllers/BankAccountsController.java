@@ -83,6 +83,7 @@ public class BankAccountsController {
         }
         return accountHolder.getCheckingAccounts();
     }
+
     //endregion
 
     //region Savings Accounts
@@ -100,12 +101,12 @@ public class BankAccountsController {
     public SavingsAccount postSavingsAccountById(@PathVariable("id") long id, @RequestBody @Valid SavingsAccount savingsAccount)
             throws ExceedsFraudSuspicionLimitException, ExceedsCombinedBalanceLimitException, AccountHolderNotFoundException {
 
-        AccountHolder accountHolder = MeritBank.getAccountHolderbyId(id);
+        AccountHolder accountHolder = accountHoldersRepository.findById(id);
         if (accountHolder == null) {
             throw new AccountHolderNotFoundException("Savings Account failed to Post: Account Holder could not be located");
         }
-        accountHolder.addSavingsAccount(savingsAccount);
-        return savingsAccount;
+        savingsAccount.setAccountHolder(accountHolder);
+        return savingsAccountRepository.save(savingsAccount);
     }
 
     /**
@@ -141,22 +142,14 @@ public class BankAccountsController {
     public CDAccount postCDAccountById(@PathVariable("id") long id, @RequestBody CDAccountDTO cdAccountDTO)
             throws ExceedsFraudSuspicionLimitException, AccountHolderNotFoundException, OfferingNotFoundException {
 
-//        AccountHolder accountHolder = MeritBank.getAccountHolderbyId(id);
-//        if (accountHolder == null) {
-//            throw new AccountHolderNotFoundException("CD Account failed to Post: Account Holder could not be located");
-//        }
-//        System.out.println(cdAccountDTO.getCDOffering());
-//        if (cdAccountDTO.getCDOffering().getId() == 0) {
-//            throw new OfferingNotFoundException("The CD Offering could not be located");
-//        }
-//        CDOffering cdOffering = MeritBank.getCDOfferingById(cdAccountDTO.getCDOffering().getId());
-//        CDAccount cdAccount = new CDAccount(cdOffering, cdAccountDTO.getBalance());
-//
-//        accountHolder.addCDAccount(cdAccount);
-//        return cdAccount;
-        CDOffering cdOffering = cdOfferingRepository.findById(cdAccountDTO.getCdOffering().getId()).orElse(null);
+        CDOffering cdOffering = cdOfferingRepository.findById(cdAccountDTO.getCdOffering().getId());
         CDAccount cdAccount = new CDAccount(cdAccountDTO.getCDOffering(), cdAccountDTO.getBalance());
         AccountHolder accountHolder = accountHoldersRepository.findById(id);
+
+        if (accountHolder == null) {
+            throw new AccountHolderNotFoundException("CD Account failed to Post: Account Holder could not be located");
+        }
+
         cdAccount.setAccountHolder(accountHolder);
         return cdAccountRepository.save(cdAccount);
     }
