@@ -52,13 +52,13 @@ public class AccountHolder implements Comparable<AccountHolder> {
 //    private AccountHolderContactDetails contactInformation;
 
     /** a list of the account holders checking accounts held by Merit Bank */
-    @OneToMany(mappedBy = "accountHolder")
+    @OneToMany(mappedBy = "accountHolder", cascade = CascadeType.ALL)
     private List<CheckingAccount> checkingAccounts;
     /** a list of the account holders savings accounts held by Merit Bank */
-    @OneToMany(mappedBy = "accountHolder")
+    @OneToMany(mappedBy = "accountHolder", cascade = CascadeType.ALL)
     private List<SavingsAccount> savingsAccounts;
     /** a list of the account holders cd accounts held by Merit Bank */
-    @OneToMany(mappedBy = "accountHolder")
+    @OneToMany(mappedBy = "accountHolder", cascade = CascadeType.ALL)
     private List<CDAccount> cdAccounts;
 
 

@@ -84,6 +84,7 @@ public class AccountHoldersController {
     public AccountHolderContactDetails postContactDetails
             (long id, @RequestBody @Valid AccountHolderContactDetails contactDetails) {
 //       AccountHolder accountHolder = accountHoldersRepository.findById(id).orElse(null);
+        // Need to link account Holder by id to the contact details
        return accountHoldersContactDetailsRepository.save(contactDetails);
     }
 
