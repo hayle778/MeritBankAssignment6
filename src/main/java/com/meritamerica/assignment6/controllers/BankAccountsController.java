@@ -6,10 +6,7 @@ import com.meritamerica.assignment6.exceptions.ExceedsCombinedBalanceLimitExcept
 import com.meritamerica.assignment6.exceptions.ExceedsFraudSuspicionLimitException;
 import com.meritamerica.assignment6.exceptions.OfferingNotFoundException;
 import com.meritamerica.assignment6.models.*;
-import com.meritamerica.assignment6.repositories.AccountHoldersRepository;
-import com.meritamerica.assignment6.repositories.CDAccountRepository;
-import com.meritamerica.assignment6.repositories.CheckingAccountRepository;
-import com.meritamerica.assignment6.repositories.SavingsAccountRepository;
+import com.meritamerica.assignment6.repositories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +33,15 @@ public class BankAccountsController {
     CheckingAccountRepository checkingAccountRepository;
 
     /** the database of savings accounts */
-    //@Autowired
+    @Autowired
     SavingsAccountRepository savingsAccountRepository;
 
     /** the database of cd accounts */
-    //@Autowired
+    @Autowired
     CDAccountRepository cdAccountRepository;
+
+    @Autowired
+    CDOfferingRepository cdOfferingRepository;
 
     //region Checking Accounts
     /**
@@ -53,16 +53,17 @@ public class BankAccountsController {
      * @param checkingAccount the checking account to be posted to the API
      * @return the checking account posted to the API
      */
+    // TODO Need to figure out how to link the account holder to the account
     @PostMapping(value="/AccountHolders/{id}/CheckingAccounts")
     @ResponseStatus(HttpStatus.CREATED)
     public CheckingAccount postCheckingAccountById(@PathVariable("id") long id, @RequestBody @Valid CheckingAccount checkingAccount)
             throws ExceedsFraudSuspicionLimitException, ExceedsCombinedBalanceLimitException, AccountHolderNotFoundException {
 
-        AccountHolder accountHolder = accountHoldersRepository.findById(id).orElse(null);
+        AccountHolder accountHolder = accountHoldersRepository.findById(id);
         if (accountHolder == null) {
             throw new AccountHolderNotFoundException("Checking Account failed to Post: Account Holder could not be located");
         }
-        accountHolder.addCheckingAccount(checkingAccount);
+        checkingAccount.setAccountHolder(accountHolder);
         return checkingAccountRepository.save(checkingAccount);
     }
 
@@ -76,7 +77,7 @@ public class BankAccountsController {
     @GetMapping(value="AccountHolders/{id}/CheckingAccounts")
     @ResponseStatus(HttpStatus.OK)
     public List<CheckingAccount> getCheckingAccountsById(@PathVariable("id") long id) throws AccountHolderNotFoundException {
-        AccountHolder accountHolder = MeritBank.getAccountHolderbyId(id);
+        AccountHolder accountHolder = accountHoldersRepository.findById(id);
         if (accountHolder == null) {
             throw new AccountHolderNotFoundException("Checking Account cannot be located: Account Holder could not be located");
         }
@@ -117,7 +118,7 @@ public class BankAccountsController {
     @GetMapping(value="AccountHolders/{id}/SavingsAccounts")
     @ResponseStatus(HttpStatus.OK)
     public List<SavingsAccount> getSavingsAccountsById(@PathVariable("id") long id) throws AccountHolderNotFoundException {
-        AccountHolder accountHolder = MeritBank.getAccountHolderbyId(id);
+        AccountHolder accountHolder = accountHoldersRepository.findById(id);
         if (accountHolder == null) {
             throw new AccountHolderNotFoundException("Savings Account cannot be located: Account Holder could not be located");
         }
@@ -140,19 +141,24 @@ public class BankAccountsController {
     public CDAccount postCDAccountById(@PathVariable("id") long id, @RequestBody CDAccountDTO cdAccountDTO)
             throws ExceedsFraudSuspicionLimitException, AccountHolderNotFoundException, OfferingNotFoundException {
 
-        AccountHolder accountHolder = MeritBank.getAccountHolderbyId(id);
-        if (accountHolder == null) {
-            throw new AccountHolderNotFoundException("CD Account failed to Post: Account Holder could not be located");
-        }
-        System.out.println(cdAccountDTO.getCDOffering());
-        if (cdAccountDTO.getCDOffering().getId() == 0) {
-            throw new OfferingNotFoundException("The CD Offering could not be located");
-        }
-        CDOffering cdOffering = MeritBank.getCDOfferingById(cdAccountDTO.getCDOffering().getId());
-        CDAccount cdAccount = new CDAccount(cdOffering, cdAccountDTO.getBalance());
-
-        accountHolder.addCDAccount(cdAccount);
-        return cdAccount;
+//        AccountHolder accountHolder = MeritBank.getAccountHolderbyId(id);
+//        if (accountHolder == null) {
+//            throw new AccountHolderNotFoundException("CD Account failed to Post: Account Holder could not be located");
+//        }
+//        System.out.println(cdAccountDTO.getCDOffering());
+//        if (cdAccountDTO.getCDOffering().getId() == 0) {
+//            throw new OfferingNotFoundException("The CD Offering could not be located");
+//        }
+//        CDOffering cdOffering = MeritBank.getCDOfferingById(cdAccountDTO.getCDOffering().getId());
+//        CDAccount cdAccount = new CDAccount(cdOffering, cdAccountDTO.getBalance());
+//
+//        accountHolder.addCDAccount(cdAccount);
+//        return cdAccount;
+        CDOffering cdOffering = cdOfferingRepository.findById(cdAccountDTO.getCdOffering().getId()).orElse(null);
+        CDAccount cdAccount = new CDAccount(cdAccountDTO.getCDOffering(), cdAccountDTO.getBalance());
+        AccountHolder accountHolder = accountHoldersRepository.findById(id);
+        cdAccount.setAccountHolder(accountHolder);
+        return cdAccountRepository.save(cdAccount);
     }
 
     /**

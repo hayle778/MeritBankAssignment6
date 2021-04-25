@@ -16,7 +16,7 @@ public class CDOffering {
 
     /** the id of an individual cd offering */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
     /** the interest rate of the offering */
     @Positive(message = "A cd offering must contain a positive interest rate (greater than 0)")

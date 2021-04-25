@@ -9,10 +9,27 @@ import com.meritamerica.assignment6.models.MeritBank;
  */
 public class CDAccountDTO{
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     /** the id of the cd offering */
     private long id;
     /** the balance of the cd account */
     private double balance;
+
+    public CDOffering getCdOffering() {
+        return cdOffering;
+    }
+
+    public void setCdOffering(CDOffering cdOffering) {
+        this.cdOffering = cdOffering;
+    }
+
     /** the cd offering associated with the cd account */
     private CDOffering cdOffering;
 

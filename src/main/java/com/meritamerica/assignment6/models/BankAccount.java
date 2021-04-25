@@ -21,6 +21,7 @@ public abstract class BankAccount {
     /** the account holder associated with any number of bank accounts */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_holder_id")
+    @JsonIgnore
     private AccountHolder accountHolder;
 
     /** the date this account was created on */

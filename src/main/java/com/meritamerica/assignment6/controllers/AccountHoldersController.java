@@ -67,7 +67,7 @@ public class AccountHoldersController {
     @GetMapping(value = "/AccountHolders/{id}")
     @ResponseStatus(HttpStatus.OK)
     public AccountHolder getAccountHolderById(@PathVariable("id") long id) throws AccountHolderNotFoundException {
-        return accountHoldersRepository.findById(id).orElse(null);
+        return accountHoldersRepository.findById(id);
     }
 
 

@@ -20,7 +20,7 @@ public class CDOfferingsController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /** the database of cd offerings */
-    //@Autowired
+    @Autowired
     CDOfferingRepository cdOfferingRepository;
 
     /**
