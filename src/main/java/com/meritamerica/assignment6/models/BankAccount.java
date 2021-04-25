@@ -39,7 +39,7 @@ public abstract class BankAccount {
 
     // region constructors
 
-    public BankAccount(){
+    public BankAccount() {
     }
 
     public BankAccount(double balance, double interestRate){

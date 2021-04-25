@@ -66,8 +66,8 @@ public class AccountHoldersController {
      */
     @GetMapping(value = "/AccountHolders/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<AccountHolder> getAccountHolderById(@PathVariable("id") long id) throws AccountHolderNotFoundException {
-        return accountHoldersRepository.findById(id);
+    public AccountHolder getAccountHolderById(@PathVariable("id") long id) throws AccountHolderNotFoundException {
+        return accountHoldersRepository.findById(id).orElse(null);
     }
 
 
@@ -83,7 +83,7 @@ public class AccountHoldersController {
     @ResponseStatus(HttpStatus.CREATED)
     public AccountHolderContactDetails postContactDetails
             (long id, @RequestBody @Valid AccountHolderContactDetails contactDetails) {
-       AccountHolder accountHolder = accountHoldersRepository.findById(id).orElse(null);
+//       AccountHolder accountHolder = accountHoldersRepository.findById(id).orElse(null);
        return accountHoldersContactDetailsRepository.save(contactDetails);
     }
 
@@ -108,7 +108,7 @@ public class AccountHoldersController {
      */
     @GetMapping(value = "/AccountHoldersContactDetails/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<AccountHolderContactDetails> getContactDetailsById(@PathVariable("id") long id) {
-        return accountHoldersContactDetailsRepository.findById(id);
+    public AccountHolderContactDetails getContactDetailsById(@PathVariable("id") long id) {
+        return accountHoldersContactDetailsRepository.findById(id).orElse(null);
     }
 }
