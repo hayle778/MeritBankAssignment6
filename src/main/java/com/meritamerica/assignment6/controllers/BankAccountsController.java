@@ -53,7 +53,6 @@ public class BankAccountsController {
      * @param checkingAccount the checking account to be posted to the API
      * @return the checking account posted to the API
      */
-    // TODO Need to figure out how to link the account holder to the account
     @PostMapping(value="/AccountHolders/{id}/CheckingAccounts")
     @ResponseStatus(HttpStatus.CREATED)
     public CheckingAccount postCheckingAccountById(@PathVariable("id") long id, @RequestBody @Valid CheckingAccount checkingAccount)
