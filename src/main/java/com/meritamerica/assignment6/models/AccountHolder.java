@@ -67,14 +67,15 @@ public class AccountHolder implements Comparable<AccountHolder> {
     //region Constructors
 
 
-// This breaks the post account holder method in http
-//    public AccountHolder() {
-//        super();
-//        this.firstName = "";
-//        this.middleName = "";
-//        this.lastName = "";
-//        this.SSN = "";
-//    }
+    /**
+     * a default no arguments constructor for account holders
+     */
+    public AccountHolder() {
+        super();
+        this.checkingAccounts = new ArrayList<>();
+        this.savingsAccounts = new ArrayList<>();
+        this.cdAccounts = new ArrayList<>();
+    }
 
     /**
      * the main constructor of the account holder class that sets the personal details

@@ -6,6 +6,7 @@ import com.meritamerica.assignment6.exceptions.ExceedsCombinedBalanceLimitExcept
 import com.meritamerica.assignment6.exceptions.ExceedsFraudSuspicionLimitException;
 import com.meritamerica.assignment6.exceptions.OfferingNotFoundException;
 import com.meritamerica.assignment6.models.*;
+import com.meritamerica.assignment6.repositories.AccountHoldersRepository;
 import com.meritamerica.assignment6.repositories.CDAccountRepository;
 import com.meritamerica.assignment6.repositories.CheckingAccountRepository;
 import com.meritamerica.assignment6.repositories.SavingsAccountRepository;
@@ -27,8 +28,11 @@ public class BankAccountsController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @Autowired
+    private AccountHoldersRepository accountHoldersRepository;
+
     /** the database of checking accounts */
-    //@Autowired
+    @Autowired
     CheckingAccountRepository checkingAccountRepository;
 
     /** the database of savings accounts */
@@ -41,37 +45,37 @@ public class BankAccountsController {
 
     //region Checking Accounts
     /**
-     * This method takes in a checking account of an individual account holder designated
+     * this method takes in a checking account of an individual account holder designated
      * by the path variable and post it to the API of Merit Bank and returns the checking
      * account.
      *
-     * @param id the path variable to an individual account holder.
-     * @param checkingAccount the checking account to be posted to the API.
-     * @return the checking account posted to the API.
+     * @param id the path variable to an individual account holder
+     * @param checkingAccount the checking account to be posted to the API
+     * @return the checking account posted to the API
      */
     @PostMapping(value="/AccountHolders/{id}/CheckingAccounts")
     @ResponseStatus(HttpStatus.CREATED)
-    public CheckingAccount postCheckingAccountById(@PathVariable("id") int id, @RequestBody @Valid CheckingAccount checkingAccount)
+    public CheckingAccount postCheckingAccountById(@PathVariable("id") long id, @RequestBody @Valid CheckingAccount checkingAccount)
             throws ExceedsFraudSuspicionLimitException, ExceedsCombinedBalanceLimitException, AccountHolderNotFoundException {
 
-        AccountHolder accountHolder = MeritBank.getAccountHolderbyId(id);
+        AccountHolder accountHolder = accountHoldersRepository.findById(id).orElse(null);
         if (accountHolder == null) {
             throw new AccountHolderNotFoundException("Checking Account failed to Post: Account Holder could not be located");
         }
         accountHolder.addCheckingAccount(checkingAccount);
-        return checkingAccount;
+        return checkingAccountRepository.save(checkingAccount);
     }
 
     /**
-     * This method retrieves an array of all the checking accounts of an individual account
+     * this method retrieves an array of all the checking accounts of an individual account
      * holder of Merit Bank.
      *
      * @param id the path variable to an individual account holder
-     * @return an array of the requested account holders checking accounts.
+     * @return an array of the requested account holders checking accounts
      */
     @GetMapping(value="AccountHolders/{id}/CheckingAccounts")
     @ResponseStatus(HttpStatus.OK)
-    public List<CheckingAccount> getCheckingAccountsById(@PathVariable("id") int id) throws AccountHolderNotFoundException {
+    public List<CheckingAccount> getCheckingAccountsById(@PathVariable("id") long id) throws AccountHolderNotFoundException {
         AccountHolder accountHolder = MeritBank.getAccountHolderbyId(id);
         if (accountHolder == null) {
             throw new AccountHolderNotFoundException("Checking Account cannot be located: Account Holder could not be located");
@@ -82,17 +86,17 @@ public class BankAccountsController {
 
     //region Savings Accounts
     /**
-     * This method takes in a savings account of an individual account holder designated
+     * this method takes in a savings account of an individual account holder designated
      * by the path variable and post it to the API of Merit Bank and returns the savings
      * account.
      *
-     * @param id the path variable to an individual account holder.
-     * @param savingsAccount the savings account to be posted to the API.
-     * @return the savings account posted to the API.
+     * @param id the path variable to an individual account holder
+     * @param savingsAccount the savings account to be posted to the API
+     * @return the savings account posted to the API
      */
     @PostMapping(value="AccountHolders/{id}/SavingsAccounts")
     @ResponseStatus(HttpStatus.CREATED)
-    public SavingsAccount postSavingsAccountById(@PathVariable("id") int id, @RequestBody @Valid SavingsAccount savingsAccount)
+    public SavingsAccount postSavingsAccountById(@PathVariable("id") long id, @RequestBody @Valid SavingsAccount savingsAccount)
             throws ExceedsFraudSuspicionLimitException, ExceedsCombinedBalanceLimitException, AccountHolderNotFoundException {
 
         AccountHolder accountHolder = MeritBank.getAccountHolderbyId(id);
@@ -104,15 +108,15 @@ public class BankAccountsController {
     }
 
     /**
-     * This method retrieves an array of all the savings accounts of an individual account
+     * this method retrieves an array of all the savings accounts of an individual account
      * holder of Merit Bank.
      *
      * @param id the path variable to an individual account holder
-     * @return an array of the requested account holders savings accounts.
+     * @return an array of the requested account holders savings accounts
      */
     @GetMapping(value="AccountHolders/{id}/SavingsAccounts")
     @ResponseStatus(HttpStatus.OK)
-    public List<SavingsAccount> getSavingsAccountsById(@PathVariable("id") int id) throws AccountHolderNotFoundException {
+    public List<SavingsAccount> getSavingsAccountsById(@PathVariable("id") long id) throws AccountHolderNotFoundException {
         AccountHolder accountHolder = MeritBank.getAccountHolderbyId(id);
         if (accountHolder == null) {
             throw new AccountHolderNotFoundException("Savings Account cannot be located: Account Holder could not be located");
@@ -123,17 +127,17 @@ public class BankAccountsController {
 
     //region CD Accounts
     /**
-     * This method takes in a cd account of an individual account holder designated
+     * this method takes in a cd account of an individual account holder designated
      * by the path variable and post it to the API of Merit Bank and returns the cd
      * account.
      *
-     * @param id the path variable to an individual account holder.
-     * @param cdAccountDTO the cd account to be posted to the API.
-     * @return the cd account posted to the API.
+     * @param id the path variable to an individual account holder
+     * @param cdAccountDTO the cd account to be posted to the API
+     * @return the cd account posted to the API
      */
     @PostMapping(value="AccountHolders/{id}/CDAccounts")
     @ResponseStatus(HttpStatus.CREATED)
-    public CDAccount postCDAccountById(@PathVariable("id") int id, @RequestBody CDAccountDTO cdAccountDTO)
+    public CDAccount postCDAccountById(@PathVariable("id") long id, @RequestBody CDAccountDTO cdAccountDTO)
             throws ExceedsFraudSuspicionLimitException, AccountHolderNotFoundException, OfferingNotFoundException {
 
         AccountHolder accountHolder = MeritBank.getAccountHolderbyId(id);
@@ -152,15 +156,15 @@ public class BankAccountsController {
     }
 
     /**
-     * This method retrieves an array of all the cd accounts of an individual account
+     * this method retrieves an array of all the cd accounts of an individual account
      * holder of Merit Bank.
      *
      * @param id the path variable to an individual account holder
-     * @return an array of the requested account holders cd accounts.
+     * @return an array of the requested account holders cd accounts
      */
     @GetMapping(value="AccountHolders/{id}/CDAccounts")
     @ResponseStatus(HttpStatus.OK)
-    public List<CDAccount> getCDAccountsById(@PathVariable("id") int id) throws AccountHolderNotFoundException {
+    public List<CDAccount> getCDAccountsById(@PathVariable("id") long id) throws AccountHolderNotFoundException {
         AccountHolder accountHolder = MeritBank.getAccountHolderbyId(id);
         if (accountHolder == null) {
             throw new AccountHolderNotFoundException("CD Account cannot be located: Account Holder could not be located");

@@ -24,11 +24,11 @@ public class CDOfferingsController {
     CDOfferingRepository cdOfferingRepository;
 
     /**
-     * This method takes in a cd offering and post it to the API of Merit Bank and
+     * this method takes in a cd offering and post it to the API of Merit Bank and
      * returns the cd offering.
      *
-     * @param cdOffering the cd offering to be posted to the API.
-     * @return the cd offering posted to the API.
+     * @param cdOffering the cd offering to be posted to the API
+     * @return the cd offering posted to the API
      */
     @PostMapping(value="/CDOfferings")
     @ResponseStatus(HttpStatus.CREATED)
@@ -40,9 +40,9 @@ public class CDOfferingsController {
     }
 
     /**
-     * This method retrieves an array of all the cd offerings available from Merit Bank.
+     * this method retrieves an array of all the cd offerings available from Merit Bank.
      *
-     * @return an array of Merit Banks cd offerings.
+     * @return an array of Merit Banks cd offerings
      */
     @GetMapping(value="/CDOfferings")
     @ResponseStatus(HttpStatus.OK)
@@ -51,14 +51,14 @@ public class CDOfferingsController {
     }
 
     /**
-     * This method retrieves a single cd offering from a given id from Merit Bank.
+     * this method retrieves a single cd offering from a given id from Merit Bank.
      *
-     * @param id the path variable to an individual cd offering.
+     * @param id the path variable to an individual cd offering
      * @return the requested cd offering from Merit Bank
      */
     @GetMapping(value="CDOfferings/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CDOffering getCDOfferingById(@PathVariable("id") long id) {
-        return cdOfferingRepository.getOne(id);
+        return cdOfferingRepository.findById(id).orElse(null);
     }
 }
