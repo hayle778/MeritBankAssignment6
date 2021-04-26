@@ -4,13 +4,18 @@ import com.meritamerica.assignment6.exceptions.AccountHolderNotFoundException;
 import com.meritamerica.assignment6.models.*;
 import com.meritamerica.assignment6.repositories.AccountHoldersContactDetailsRepository;
 import com.meritamerica.assignment6.repositories.AccountHoldersRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class AccountHoldersServiceImpl implements AccountHoldersService{
 
+    @Autowired
     private AccountHoldersRepository accountHoldersRepository;
 
+    @Autowired
     private AccountHoldersContactDetailsRepository accountHoldersContactDetailsRepository;
 
     @Override

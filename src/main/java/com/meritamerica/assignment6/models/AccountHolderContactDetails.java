@@ -1,5 +1,7 @@
 package com.meritamerica.assignment6.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -25,8 +27,9 @@ public class AccountHolderContactDetails {
     @Column(name = "birth_date")
     private String birthDate;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_holder_id", referencedColumnName = "account_holder_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_holder_id")
+    @JsonIgnore
     private AccountHolder accountHolder;
 
     public AccountHolderContactDetails() { super(); }

@@ -15,7 +15,6 @@ import java.util.List;
  * of objects of their various accounts held by Merit Bank.
  */
 @Entity
-@Table(name = "account_holders")
 public class AccountHolder implements Comparable<AccountHolder> {
 
     //region InstanceVariables
@@ -47,10 +46,9 @@ public class AccountHolder implements Comparable<AccountHolder> {
     @Column(name = "ssn")
     private String SSN;
 
-//    /** an object that contains the account holders contact information */
-//    @JoinColumn
-//    @OneToOne(cascade = CascadeType.ALL)
-//    private AccountHolderContactDetails contactInformation;
+    /** an object that contains the account holders contact information */
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "accountHolder")
+    private AccountHolderContactDetails contactInformation;
 
     /** a list of the account holders checking accounts held by Merit Bank */
     @OneToMany(mappedBy = "accountHolder", cascade = CascadeType.ALL)
@@ -136,13 +134,13 @@ public class AccountHolder implements Comparable<AccountHolder> {
 
     public void setId(long id) { this.id = id; }
 
-//    public AccountHolderContactDetails getAccountHolderContactDetails() {
-//        return this.contactInformation;
-//    }
-//
-//    public void setAccountHolderContactDetails(AccountHolderContactDetails contactInformation) {
-//        this.contactInformation = contactInformation;
-//    }
+    public AccountHolderContactDetails getAccountHolderContactDetails() {
+        return this.contactInformation;
+    }
+
+    public void setAccountHolderContactDetails(AccountHolderContactDetails contactInformation) {
+        this.contactInformation = contactInformation;
+    }
     //endregion
 
 

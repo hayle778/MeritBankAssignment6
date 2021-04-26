@@ -2,9 +2,11 @@ package com.meritamerica.assignment6.services;
 
 import com.meritamerica.assignment6.exceptions.AccountHolderNotFoundException;
 import com.meritamerica.assignment6.models.*;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface AccountHoldersService {
 
     public AccountHolder addAccountHolder(AccountHolder accountHolder);
