@@ -3,6 +3,7 @@ package com.meritamerica.assignment6.controllers;
 import com.meritamerica.assignment6.exceptions.*;
 import com.meritamerica.assignment6.models.*;
 import com.meritamerica.assignment6.repositories.CDOfferingRepository;
+import com.meritamerica.assignment6.services.CDOfferingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class CDOfferingsController {
 
     /** the database of cd offerings */
     @Autowired
-    CDOfferingRepository cdOfferingRepository;
+    CDOfferingService cdOfferingService;
 
     /**
      * this method takes in a cd offering and post it to the API of Merit Bank and
@@ -33,10 +34,7 @@ public class CDOfferingsController {
     @PostMapping(value="/CDOfferings")
     @ResponseStatus(HttpStatus.CREATED)
     public CDOffering postCDOffering(@RequestBody CDOffering cdOffering) throws InvalidArgumentException {
-        if (cdOffering.getInterestRate() <= 0 || cdOffering.getInterestRate() >= 1 || cdOffering.getTerm() < 1) {
-            throw new InvalidArgumentException("Invalid Term or Interest Rate");
-        }
-        return cdOfferingRepository.save(cdOffering);
+        return cdOfferingService.addCDOffering(cdOffering);
     }
 
     /**
@@ -47,7 +45,7 @@ public class CDOfferingsController {
     @GetMapping(value="/CDOfferings")
     @ResponseStatus(HttpStatus.OK)
     public List<CDOffering> getCDOfferings() {
-        return cdOfferingRepository.findAll();
+        return cdOfferingService.getCDOfferings();
     }
 
     /**
@@ -59,6 +57,6 @@ public class CDOfferingsController {
     @GetMapping(value="CDOfferings/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CDOffering getCDOfferingById(@PathVariable("id") long id) {
-        return cdOfferingRepository.findById(id);
+        return cdOfferingService.getCDOffering(id);
     }
 }

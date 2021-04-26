@@ -1,12 +1,10 @@
 package com.meritamerica.assignment6.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 /**
  * this class represents a cd offering which consist of an id, term and interest rate
@@ -27,6 +25,8 @@ public class CDOffering {
     protected int term;
 
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cdOffering")
+    private List<CDAccount> cdAccounts;
 
     public CDOffering() {}
 
@@ -42,6 +42,14 @@ public class CDOffering {
     public long getId() { return this.id; }
 
     public void setId(long id) { this.id = id; }
+
+    public List<CDAccount> getCdAccounts() {
+        return cdAccounts;
+    }
+
+    public void setCdAccounts(List<CDAccount> cdAccounts) {
+        this.cdAccounts = cdAccounts;
+    }
 
     static CDOffering readFromString(String cdOfferingDataString){
         String[] temp = cdOfferingDataString.split(",");
