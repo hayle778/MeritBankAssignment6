@@ -8,4 +8,8 @@ public class AccountHolderNotFoundException extends Exception {
     public AccountHolderNotFoundException(String message) {
         super(message);
     }
+
+    public AccountHolderNotFoundException() {
+
+    }
 }

@@ -5,6 +5,7 @@ import com.meritamerica.assignment6.models.AccountHolder;
 import com.meritamerica.assignment6.models.AccountHolderContactDetails;
 import com.meritamerica.assignment6.repositories.AccountHoldersContactDetailsRepository;
 import com.meritamerica.assignment6.repositories.AccountHoldersRepository;
+import com.meritamerica.assignment6.services.AccountHoldersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,10 @@ public class AccountHoldersController {
 
     /** the database of account holders */
     @Autowired
-    AccountHoldersRepository accountHoldersRepository;
+    AccountHoldersService accountHoldersService;
 
-    /** the database of the contact information of account holders */
     @Autowired
     AccountHoldersContactDetailsRepository accountHoldersContactDetailsRepository;
-
 
 
     /**
@@ -44,7 +43,7 @@ public class AccountHoldersController {
     @PostMapping(value="/AccountHolders")
     @ResponseStatus(HttpStatus.CREATED)
     public AccountHolder postAccountHolder(@RequestBody @Valid AccountHolder accountHolder) {
-        return accountHoldersRepository.save(accountHolder);
+        return accountHoldersService.addAccountHolder(accountHolder);
     }
 
     /**
@@ -55,7 +54,7 @@ public class AccountHoldersController {
     @GetMapping(value = "/AccountHolders")
     @ResponseStatus(HttpStatus.OK)
     public List<AccountHolder> getAccountHolders() throws AccountHolderNotFoundException {
-        return accountHoldersRepository.findAll();
+        return accountHoldersService.getAccountHolders();
     }
 
     /**
@@ -67,7 +66,7 @@ public class AccountHoldersController {
     @GetMapping(value = "/AccountHolders/{id}")
     @ResponseStatus(HttpStatus.OK)
     public AccountHolder getAccountHolderById(@PathVariable("id") long id) throws AccountHolderNotFoundException {
-        return accountHoldersRepository.findById(id);
+        return accountHoldersService.getAccountHolder(id);
     }
 
 
@@ -110,6 +109,6 @@ public class AccountHoldersController {
     @GetMapping(value = "/AccountHoldersContactDetails/{id}")
     @ResponseStatus(HttpStatus.OK)
     public AccountHolderContactDetails getContactDetailsById(@PathVariable("id") long id) {
-        return accountHoldersContactDetailsRepository.findById(id).orElse(null);
+        return accountHoldersContactDetailsRepository.findById(id);
     }
 }

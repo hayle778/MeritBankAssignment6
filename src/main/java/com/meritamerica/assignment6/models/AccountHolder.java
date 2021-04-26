@@ -21,7 +21,8 @@ public class AccountHolder implements Comparable<AccountHolder> {
     //region InstanceVariables
     /** The primary key of an account holder which is used to locate them by the API */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "account_holder_id")
     private long id;
 
     /** an account holders first name */

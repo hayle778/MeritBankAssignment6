@@ -19,7 +19,7 @@ public class CDAccount extends BankAccount {
 
     /** the primary key for CD Accounts */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     /** the cd offering associated with this account */
